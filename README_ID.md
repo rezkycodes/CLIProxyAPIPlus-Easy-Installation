@@ -33,6 +33,7 @@ Anggap saja ini seperti "router" untuk model AI - kamu login sekali ke setiap pr
 | **Qwen**           | `--qwen-login`           | qwen3-coder-plus                                          |
 | **iFlow**          | `--iflow-login`          | glm-4.6, minimax-m2                                       |
 | **Kiro (AWS)**     | `--kiro-aws-login`       | kiro-claude-opus-4.5, kiro-claude-sonnet-4.5              |
+| **GLM (ZhipuAI)**  | `--glm-login`            | glm-4-plus, glm-4-air, codegeex-4                         |
 
 ---
 
@@ -346,6 +347,14 @@ curl http://localhost:8317/v1/chat/completions \
 | `kiro-claude-sonnet-4.5` | Claude Sonnet 4.5 via Kiro |
 | `kiro-claude-sonnet-4`   | Claude Sonnet 4 via Kiro   |
 | `kiro-claude-haiku-4.5`  | Claude Haiku 4.5 via Kiro  |
+
+### Provider GLM (ZhipuAI)
+| Model ID      | Deskripsi                      |
+| ------------- | ------------------------------ |
+| `glm-4-plus`  | GLM-4 Plus (paling canggih)    |
+| `glm-4-air`   | GLM-4 Air (seimbang)           |
+| `glm-4-flash` | GLM-4 Flash (cepat)            |
+| `codegeex-4`  | CodeGeeX-4 (spesialis coding)  |
 
 ---
 

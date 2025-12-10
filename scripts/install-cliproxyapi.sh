@@ -366,23 +366,49 @@ fi
 # Add ~/bin to PATH if not already
 print_step "Configuring PATH..."
 
-shell_profile=""
-if [ -n "$BASH_VERSION" ]; then
-    shell_profile="$HOME/.bashrc"
-elif [ -n "$ZSH_VERSION" ]; then
-    shell_profile="$HOME/.zshrc"
-else
-    shell_profile="$HOME/.profile"
+path_added=false
+path_export_line="export PATH=\"\$HOME/bin:\$PATH\""
+
+# Add to .bashrc
+if [ -f "$HOME/.bashrc" ]; then
+    if ! grep -q "export PATH=\"\$HOME/bin:\$PATH\"" "$HOME/.bashrc"; then
+        echo "" >> "$HOME/.bashrc"
+        echo "# Added by CLIProxyAPI-Plus installer" >> "$HOME/.bashrc"
+        echo "$path_export_line" >> "$HOME/.bashrc"
+        print_success "Added $BIN_DIR to PATH in .bashrc"
+        path_added=true
+    fi
 fi
 
+# Add to .zshrc
+if [ -f "$HOME/.zshrc" ]; then
+    if ! grep -q "export PATH=\"\$HOME/bin:\$PATH\"" "$HOME/.zshrc"; then
+        echo "" >> "$HOME/.zshrc"
+        echo "# Added by CLIProxyAPI-Plus installer" >> "$HOME/.zshrc"
+        echo "$path_export_line" >> "$HOME/.zshrc"
+        print_success "Added $BIN_DIR to PATH in .zshrc"
+        path_added=true
+    fi
+fi
+
+# Fallback to .profile if neither exists
+if [ ! -f "$HOME/.bashrc" ] && [ ! -f "$HOME/.zshrc" ] && [ -f "$HOME/.profile" ]; then
+    if ! grep -q "export PATH=\"\$HOME/bin:\$PATH\"" "$HOME/.profile"; then
+        echo "" >> "$HOME/.profile"
+        echo "# Added by CLIProxyAPI-Plus installer" >> "$HOME/.profile"
+        echo "$path_export_line" >> "$HOME/.profile"
+        print_success "Added $BIN_DIR to PATH in .profile"
+        path_added=true
+    fi
+fi
+
+# Update current session PATH
 if ! echo "$PATH" | grep -q "$BIN_DIR"; then
-    echo "export PATH=\"\$HOME/bin:\$PATH\"" >> "$shell_profile"
-    print_success "Added $BIN_DIR to PATH in $shell_profile"
     export PATH="$HOME/bin:$PATH"
-    path_added=true
-else
+fi
+
+if [ "$path_added" = false ]; then
     print_success "$BIN_DIR already in PATH"
-    path_added=false
 fi
 
 # Copy scripts to ~/bin
@@ -462,8 +488,10 @@ EOF
 if [ "$path_added" = true ]; then
     cat << EOF
 
-NOTE: Restart your terminal or run:
-      source $shell_profile
+NOTE: PATH has been added to your shell profiles.
+      Restart your terminal or run:
+        source ~/.bashrc    # for bash
+        source ~/.zshrc     # for zsh
 EOF
 fi
 

@@ -8,6 +8,7 @@
     cliproxyapi-oauth.ps1              # Interactive menu
     cliproxyapi-oauth.ps1 -All         # Login to all providers
     cliproxyapi-oauth.ps1 -Gemini      # Login to Gemini only
+    cliproxyapi-oauth.ps1 -GLM         # Login to GLM (ZhipuAI) only
 #>
 
 param(
@@ -19,7 +20,8 @@ param(
     [switch]$Claude,
     [switch]$Qwen,
     [switch]$iFlow,
-    [switch]$Kiro
+    [switch]$Kiro,
+    [switch]$GLM
 )
 
 $CONFIG_DIR = "$env:USERPROFILE\.cli-proxy-api"
@@ -40,6 +42,7 @@ $providers = @(
     @{ Name = "Qwen"; Flag = "--qwen-login"; Switch = "Qwen" }
     @{ Name = "iFlow"; Flag = "--iflow-login"; Switch = "iFlow" }
     @{ Name = "Kiro (AWS)"; Flag = "--kiro-aws-login"; Switch = "Kiro" }
+    @{ Name = "GLM (ZhipuAI)"; Flag = "--glm-login"; Switch = "GLM" }
 )
 
 function Run-Login {
@@ -55,7 +58,7 @@ function Run-Login {
 }
 
 # Check if any specific flag was passed
-$anyFlagPassed = $All -or $Gemini -or $Antigravity -or $Copilot -or $Codex -or $Claude -or $Qwen -or $iFlow -or $Kiro
+$anyFlagPassed = $All -or $Gemini -or $Antigravity -or $Copilot -or $Codex -or $Claude -or $Qwen -or $iFlow -or $Kiro -or $GLM
 
 if ($anyFlagPassed) {
     # Direct mode - run specified logins
@@ -84,7 +87,7 @@ if ($anyFlagPassed) {
     Write-Host ""
 
     while ($true) {
-        $choice = Read-Host "Select provider(s) [1-8, A, or Q]"
+        $choice = Read-Host "Select provider(s) [1-9, A, or Q]"
         
         if ($choice -eq 'Q' -or $choice -eq 'q') {
             Write-Host "Bye!" -ForegroundColor Green

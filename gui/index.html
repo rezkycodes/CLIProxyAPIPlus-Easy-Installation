@@ -1670,6 +1670,10 @@
             
             try {
                 const res = await fetch('/api/start', { method: 'POST' });
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                }
+                
                 const data = await res.json();
                 
                 if (data.success) {
@@ -1678,12 +1682,13 @@
                     setTimeout(checkStatus, 500);
                     setTimeout(loadModels, 1500);
                 } else {
-                    log(`Failed: ${data.error}`, 'error');
-                    showToast(data.error);
+                    log(`Failed: ${data.error || 'Unknown error'}`, 'error');
+                    showToast(data.error || 'Start failed');
                     checkStatus();
                 }
             } catch (e) {
                 log(`Error: ${e.message}`, 'error');
+                showToast('Start failed: ' + e.message);
                 checkStatus();
             }
         }
@@ -1694,6 +1699,10 @@
             
             try {
                 const res = await fetch('/api/stop', { method: 'POST' });
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                }
+                
                 const data = await res.json();
                 
                 if (data.success) {
@@ -1701,12 +1710,13 @@
                     showToast('Server stopped');
                     setTimeout(checkStatus, 300);
                 } else {
-                    log(`Failed: ${data.error}`, 'error');
-                    showToast(data.error);
+                    log(`Failed: ${data.error || 'Unknown error'}`, 'error');
+                    showToast(data.error || 'Stop failed');
                     checkStatus();
                 }
             } catch (e) {
                 log(`Error: ${e.message}`, 'error');
+                showToast('Stop failed: ' + e.message);
                 checkStatus();
             }
         }
@@ -1717,19 +1727,26 @@
             
             try {
                 const res = await fetch('/api/restart', { method: 'POST' });
-                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                }
+                
+                const text = await res.text();
+                const data = text ? JSON.parse(text) : {};
                 
                 if (data.success) {
                     log(`Server restarted (PID: ${data.pid})`, 'success');
                     showToast('Server restarted');
                     setTimeout(checkStatus, 500);
+                    setTimeout(loadModels, 1500);
                 } else {
-                    log(`Failed: ${data.error}`, 'error');
-                    showToast(data.error);
+                    log(`Failed: ${data.error || 'Unknown error'}`, 'error');
+                    showToast(data.error || 'Restart failed');
                     checkStatus();
                 }
             } catch (e) {
                 log(`Error: ${e.message}`, 'error');
+                showToast('Restart failed: ' + e.message);
                 checkStatus();
             }
         }
@@ -1738,18 +1755,46 @@
             log(`Logging in to ${name}...`, 'info');
             
             try {
-                const res = await fetch(`/api/oauth/${name}`, { method: 'POST' });
+                const res = await fetch('/api/provider/login', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ provider: name })
+                });
+                
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                }
+                
                 const data = await res.json();
                 
                 if (data.success) {
+                    const message = data.message || `Opening ${name} login...`;
                     log(`OAuth login started for ${name}`, 'success');
-                    showToast(`Opening ${name} login...`);
+                    showToast(message);
+                    
+                    // Show notification about terminal
+                    log('A new terminal window should open for authentication', 'info');
+                    log('Complete the login in the terminal, then close it', 'info');
+                    
+                    // Refresh auth status after delays (login might take time)
+                    setTimeout(checkAuthStatus, 5000);   // Check after 5s
+                    setTimeout(checkAuthStatus, 15000);  // Check again after 15s
+                    setTimeout(checkAuthStatus, 30000);  // Final check after 30s
                 } else {
-                    log(`Failed: ${data.error}`, 'error');
-                    showToast(data.error);
+                    const error = data.error || 'Unknown error';
+                    log(`Failed: ${error}`, 'error');
+                    
+                    // Show manual instructions if provided
+                    if (data.instructions) {
+                        log(`Manual login: ${data.instructions}`, 'warning');
+                        showToast('Open terminal and run: ' + data.instructions);
+                    } else {
+                        showToast(error);
+                    }
                 }
             } catch (e) {
                 log(`Error: ${e.message}`, 'error');
+                showToast('Login failed: ' + e.message);
             }
         }
 

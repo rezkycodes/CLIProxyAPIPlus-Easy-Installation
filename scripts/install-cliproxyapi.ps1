@@ -251,14 +251,49 @@ if (Test-Path $binaryPath) {
 
 # Add ~/bin to PATH if not already
 Write-Step "Configuring PATH..."
+$pathAdded = $false
+
+# Add to system PATH (environment variable)
 $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
 if ($userPath -notlike "*$BIN_DIR*") {
     [Environment]::SetEnvironmentVariable("Path", "$userPath;$BIN_DIR", "User")
-    Write-Success "Added $BIN_DIR to PATH"
+    Write-Success "Added $BIN_DIR to system PATH"
     $pathAdded = $true
+    # Update current session
+    $env:Path = [Environment]::GetEnvironmentVariable("Path", "User") + ";" + [Environment]::GetEnvironmentVariable("Path", "Machine")
 } else {
-    Write-Success "$BIN_DIR already in PATH"
-    $pathAdded = $false
+    Write-Success "$BIN_DIR already in system PATH"
+}
+
+# Add to PowerShell profile
+$profilePath = $PROFILE.CurrentUserAllHosts
+if (-not $profilePath) {
+    $profilePath = "$env:USERPROFILE\Documents\WindowsPowerShell\profile.ps1"
+}
+
+$profileDir = Split-Path -Parent $profilePath
+if (-not (Test-Path $profileDir)) {
+    New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
+}
+
+$pathLine = "`$env:Path = `"`$env:USERPROFILE\bin;`$env:Path`""
+$profileExists = Test-Path $profilePath
+
+if ($profileExists) {
+    $profileContent = Get-Content $profilePath -Raw -ErrorAction SilentlyContinue
+    if ($profileContent -notlike "*`$env:USERPROFILE\bin*") {
+        Add-Content -Path $profilePath -Value "`n# Added by CLIProxyAPI-Plus installer`n$pathLine"
+        Write-Success "Added $BIN_DIR to PowerShell profile"
+        $pathAdded = $true
+    }
+} else {
+    "# Added by CLIProxyAPI-Plus installer`n$pathLine" | Out-File -FilePath $profilePath -Encoding utf8
+    Write-Success "Created PowerShell profile and added $BIN_DIR to PATH"
+    $pathAdded = $true
+}
+
+if (-not $pathAdded) {
+    Write-Success "PATH already configured in all profiles"
 }
 
 # OAuth login prompts
@@ -328,8 +363,9 @@ Quick Start:
 if ($pathAdded) {
     Write-Host @"
 
-NOTE: Restart your terminal for PATH changes to take effect.
-      Or run: `$env:Path = [Environment]::GetEnvironmentVariable('Path', 'User')
+NOTE: PATH has been added to your PowerShell profile and system PATH.
+      Restart your terminal or run:
+        . `$PROFILE    # reload PowerShell profile
 "@ -ForegroundColor Yellow
 }
 

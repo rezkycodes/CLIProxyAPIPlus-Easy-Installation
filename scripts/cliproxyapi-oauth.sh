@@ -8,6 +8,7 @@
 #     cliproxyapi-oauth              # Interactive menu
 #     cliproxyapi-oauth --all        # Login to all providers
 #     cliproxyapi-oauth --gemini     # Login to Gemini only
+#     cliproxyapi-oauth --glm        # Login to GLM (ZhipuAI) only
 
 CONFIG_DIR="$HOME/.cli-proxy-api"
 CONFIG_FILE="$CONFIG_DIR/config.yaml"
@@ -34,6 +35,7 @@ declare -A PROVIDERS=(
     ["6"]="Qwen|--qwen-login"
     ["7"]="iFlow|--iflow-login"
     ["8"]="Kiro (AWS)|--kiro-aws-login"
+    ["9"]="GLM (ZhipuAI)|--glm-login"
 )
 
 # Run login for a provider
@@ -65,6 +67,7 @@ CLAUDE_FLAG=false
 QWEN_FLAG=false
 IFLOW_FLAG=false
 KIRO_FLAG=false
+GLM_FLAG=false
 
 for arg in "$@"; do
     case $arg in
@@ -77,6 +80,7 @@ for arg in "$@"; do
         --qwen) QWEN_FLAG=true ;;
         --iflow) IFLOW_FLAG=true ;;
         --kiro) KIRO_FLAG=true ;;
+        --glm) GLM_FLAG=true ;;
         --help|-h)
             echo "Usage: cliproxyapi-oauth [OPTIONS]"
             echo "Options:"
@@ -89,6 +93,7 @@ for arg in "$@"; do
             echo "  --qwen         Login to Qwen"
             echo "  --iflow        Login to iFlow"
             echo "  --kiro         Login to Kiro (AWS)"
+            echo "  --glm          Login to GLM (ZhipuAI)"
             echo "  --help, -h     Show this help"
             exit 0
             ;;
@@ -139,6 +144,10 @@ if [ "$any_flag" = true ]; then
     if [ "$ALL_FLAG" = true ] || [ "$KIRO_FLAG" = true ]; then
         run_login "Kiro (AWS)" "--kiro-aws-login"
     fi
+    
+    if [ "$ALL_FLAG" = true ] || [ "$GLM_FLAG" = true ]; then
+        run_login "GLM (ZhipuAI)" "--glm-login"
+    fi
 else
     # Interactive menu mode
     cat << "EOF"
@@ -156,12 +165,13 @@ EOF
     echo "  6. Qwen"
     echo "  7. iFlow"
     echo "  8. Kiro (AWS)"
+    echo "  9. GLM (ZhipuAI)"
     echo "  A. Login to ALL providers"
     echo "  Q. Quit"
     echo ""
     
     while true; do
-        read -p "Select provider(s) [1-8, A, or Q]: " choice
+        read -p "Select provider(s) [1-9, A, or Q]: " choice
         
         case $choice in
             Q|q)
@@ -180,7 +190,7 @@ EOF
                 print_success "All logins completed!"
                 break
                 ;;
-            [1-8])
+            [1-9])
                 if [ -n "${PROVIDERS[$choice]}" ]; then
                     IFS='|' read -r name flag <<< "${PROVIDERS[$choice]}"
                     run_login "$name" "$flag"
@@ -190,7 +200,7 @@ EOF
                 echo ""
                 ;;
             *)
-                print_warning "Invalid input. Please select 1-8, A, or Q."
+                print_warning "Invalid input. Please select 1-9, A, or Q."
                 ;;
         esac
     done
