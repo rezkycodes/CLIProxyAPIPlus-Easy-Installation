@@ -61,12 +61,16 @@ Think of it as a "router" for AI models - you login once to each provider via OA
 
 ---
 
-## Quick Start (Windows)
+## Quick Start
 
 ### Prerequisites
 
 - **Git** - [Download](https://git-scm.com/downloads)
 - **Go 1.21+** (optional, for building from source) - [Download](https://go.dev/dl/)
+
+---
+
+## Installation (Windows)
 
 ### Option 1: One-Line Install (Recommended)
 
@@ -89,7 +93,7 @@ cd CLIProxyAPIPlus-Easy-Installation
 .\scripts\install-cliproxyapi.ps1
 ```
 
-### After Installation
+### After Installation (Windows)
 
 Scripts are installed to `~/bin/` and added to PATH automatically.
 
@@ -107,7 +111,61 @@ cliproxyapi-oauth -All
 gui-cliproxyapi
 ```
 
-**Available Scripts:**
+---
+
+## Installation (Linux/Ubuntu/Fedora)
+
+### Option 1: One-Line Install (Recommended)
+
+```bash
+# Download and run the installer
+curl -fsSL https://raw.githubusercontent.com/julianromli/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
+
+# Or using wget
+wget -qO- https://raw.githubusercontent.com/julianromli/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
+```
+
+### Option 2: Manual Install
+
+```bash
+# Clone this repo
+git clone https://github.com/julianromli/CLIProxyAPIPlus-Easy-Installation.git
+cd CLIProxyAPIPlus-Easy-Installation
+
+# Make scripts executable
+chmod +x scripts/*.sh
+
+# Run the installer
+./scripts/install-cliproxyapi.sh
+```
+
+### After Installation (Linux)
+
+Scripts are installed to `~/bin/` and added to PATH automatically.
+
+```bash
+# Restart terminal or reload shell config
+source ~/.bashrc  # or ~/.zshrc for Zsh users
+
+# Start server in background
+start-cliproxyapi --background
+
+# Login to providers
+cliproxyapi-oauth --all
+
+# Open GUI Control Center (requires python3)
+gui-cliproxyapi
+```
+
+### Linux-Specific Notes
+
+- **Python 3** is required for the GUI (usually pre-installed)
+- Use `--` for long flags in bash (e.g., `--background` instead of `-Background`)
+- For systemd service setup, see the wiki (coming soon)
+
+---
+
+**Available Commands (Cross-Platform):**
 - `start-cliproxyapi` - Start/stop/restart server
 - `cliproxyapi-oauth` - Login to OAuth providers
 - `gui-cliproxyapi` - Open GUI Control Center
@@ -293,10 +351,11 @@ curl http://localhost:8317/v1/chat/completions \
 
 ## Scripts Reference
 
-### `start-cliproxyapi.ps1`
+### `start-cliproxyapi` (Windows: `.ps1` / Linux: `.sh`)
 
 Server manager - start, stop, and monitor.
 
+**Windows (PowerShell):**
 ```powershell
 # Start server (foreground)
 .\start-cliproxyapi.ps1
@@ -317,10 +376,32 @@ Server manager - start, stop, and monitor.
 .\start-cliproxyapi.ps1 -Logs
 ```
 
-### `install-cliproxyapi.ps1`
+**Linux (Bash):**
+```bash
+# Start server (foreground)
+start-cliproxyapi
+
+# Start in background
+start-cliproxyapi --background
+
+# Check status
+start-cliproxyapi --status
+
+# Stop server
+start-cliproxyapi --stop
+
+# Restart
+start-cliproxyapi --restart
+
+# View logs
+start-cliproxyapi --logs
+```
+
+### `install-cliproxyapi` (Windows: `.ps1` / Linux: `.sh`)
 
 Full installation script.
 
+**Windows (PowerShell):**
 ```powershell
 # Default: Build from source
 .\install-cliproxyapi.ps1
@@ -335,10 +416,26 @@ Full installation script.
 .\install-cliproxyapi.ps1 -SkipOAuth
 ```
 
-### `update-cliproxyapi.ps1`
+**Linux (Bash):**
+```bash
+# Default: Build from source
+./install-cliproxyapi.sh
+
+# Use pre-built binary (no Go required)
+./install-cliproxyapi.sh --use-prebuilt
+
+# Force reinstall (overwrites existing)
+./install-cliproxyapi.sh --force
+
+# Skip OAuth instructions
+./install-cliproxyapi.sh --skip-oauth
+```
+
+### `update-cliproxyapi` (Windows: `.ps1` / Linux: `.sh`)
 
 Update to latest version.
 
+**Windows (PowerShell):**
 ```powershell
 # Update from source (if cloned)
 .\update-cliproxyapi.ps1
@@ -350,10 +447,23 @@ Update to latest version.
 .\update-cliproxyapi.ps1 -Force
 ```
 
-### `cliproxyapi-oauth.ps1`
+**Linux (Bash):**
+```bash
+# Update from source (if cloned)
+update-cliproxyapi
+
+# Update using pre-built binary
+update-cliproxyapi --use-prebuilt
+
+# Force update even if up-to-date
+update-cliproxyapi --force
+```
+
+### `cliproxyapi-oauth` (Windows: `.ps1` / Linux: `.sh`)
 
 Interactive OAuth login helper.
 
+**Windows (PowerShell):**
 ```powershell
 # Interactive menu
 .\cliproxyapi-oauth.ps1
@@ -365,10 +475,23 @@ Interactive OAuth login helper.
 .\cliproxyapi-oauth.ps1 -Gemini -Copilot -Kiro
 ```
 
-### `uninstall-cliproxyapi.ps1`
+**Linux (Bash):**
+```bash
+# Interactive menu
+cliproxyapi-oauth
+
+# Login to all providers
+cliproxyapi-oauth --all
+
+# Login to specific providers
+cliproxyapi-oauth --gemini --copilot --kiro
+```
+
+### `uninstall-cliproxyapi` (Windows: `.ps1` / Linux: `.sh`)
 
 Clean uninstallation.
 
+**Windows (PowerShell):**
 ```powershell
 # Uninstall (keeps auth files)
 .\uninstall-cliproxyapi.ps1
@@ -380,10 +503,23 @@ Clean uninstallation.
 .\uninstall-cliproxyapi.ps1 -All -Force
 ```
 
-### `gui-cliproxyapi.ps1`
+**Linux (Bash):**
+```bash
+# Uninstall (keeps auth files)
+uninstall-cliproxyapi
+
+# Remove everything including auth
+uninstall-cliproxyapi --all
+
+# Force without confirmation
+uninstall-cliproxyapi --all --force
+```
+
+### `gui-cliproxyapi` (Windows: `.ps1` / Linux: `.sh`)
 
 GUI Control Center with full server management.
 
+**Windows (PowerShell):**
 ```powershell
 # Open GUI (starts management server on port 8318)
 gui-cliproxyapi.ps1
@@ -395,12 +531,24 @@ gui-cliproxyapi.ps1 -Port 9000
 gui-cliproxyapi.ps1 -NoBrowser
 ```
 
+**Linux (Bash):**
+```bash
+# Open GUI (requires python3)
+gui-cliproxyapi
+
+# Use custom port
+gui-cliproxyapi --port=9000
+
+# Don't auto-open browser
+gui-cliproxyapi --no-browser
+```
+
 **Features:**
 - Real-time server status monitoring
 - Start/Stop/Restart buttons (actually work!)
 - OAuth login buttons for all providers
-- **Request Statistics** - Total requests, success rate, avg latency, errors
-- **Auto-Updater** - Click version badge to check for updates
+- **Request Statistics** - Total requests, success rate, avg latency, errors (Windows only)
+- **Auto-Updater** - Click version badge to check for updates (Windows only)
 - Provider auth status indicators (green = connected)
 - Available models list (when server is running)
 - Configuration editor (edit config.yaml directly)
@@ -410,6 +558,8 @@ gui-cliproxyapi.ps1 -NoBrowser
 - Keyboard shortcuts: `R` to refresh, `Esc` to close modals
 
 The GUI runs a local management server on `localhost:8318` that handles all control commands.
+
+**Note:** The Linux version provides core functionality with a Python-based server. For full features, use the Windows PowerShell version.
 
 ---
 

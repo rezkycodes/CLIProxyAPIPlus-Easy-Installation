@@ -61,12 +61,16 @@ Anggap saja ini seperti "router" untuk model AI - kamu login sekali ke setiap pr
 
 ---
 
-## Quick Start (Windows)
+## Quick Start
 
 ### Prasyarat
 
 - **Git** - [Download](https://git-scm.com/downloads)
 - **Go 1.21+** (opsional, untuk build dari source) - [Download](https://go.dev/dl/)
+
+---
+
+## Instalasi (Windows)
 
 ### Opsi 1: Install Satu Baris (Recommended)
 
@@ -89,7 +93,7 @@ cd CLIProxyAPIPlus-Easy-Installation
 .\scripts\install-cliproxyapi.ps1
 ```
 
-### Setelah Instalasi
+### Setelah Instalasi (Windows)
 
 Script diinstall ke `~/bin/` dan otomatis ditambahkan ke PATH.
 
@@ -107,7 +111,61 @@ cliproxyapi-oauth -All
 gui-cliproxyapi
 ```
 
-**Script yang Tersedia:**
+---
+
+## Instalasi (Linux/Ubuntu/Fedora)
+
+### Opsi 1: Install Satu Baris (Recommended)
+
+```bash
+# Download dan jalankan installer
+curl -fsSL https://raw.githubusercontent.com/julianromli/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
+
+# Atau pake wget
+wget -qO- https://raw.githubusercontent.com/julianromli/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
+```
+
+### Opsi 2: Install Manual
+
+```bash
+# Clone repo ini
+git clone https://github.com/julianromli/CLIProxyAPIPlus-Easy-Installation.git
+cd CLIProxyAPIPlus-Easy-Installation
+
+# Jadikan scripts executable
+chmod +x scripts/*.sh
+
+# Jalankan installer
+./scripts/install-cliproxyapi.sh
+```
+
+### Setelah Instalasi (Linux)
+
+Script diinstall ke `~/bin/` dan otomatis ditambahkan ke PATH.
+
+```bash
+# Restart terminal atau reload shell config
+source ~/.bashrc  # atau ~/.zshrc untuk pengguna Zsh
+
+# Start server di background
+start-cliproxyapi --background
+
+# Login ke provider
+cliproxyapi-oauth --all
+
+# Buka GUI Control Center (butuh python3)
+gui-cliproxyapi
+```
+
+### Catatan Khusus Linux
+
+- **Python 3** diperlukan untuk GUI (biasanya sudah terinstall)
+- Gunakan `--` untuk long flags di bash (misal `--background` bukan `-Background`)
+- Untuk setup systemd service, lihat wiki (coming soon)
+
+---
+
+**Perintah yang Tersedia (Cross-Platform):**
 - `start-cliproxyapi` - Start/stop/restart server
 - `cliproxyapi-oauth` - Login ke OAuth provider
 - `gui-cliproxyapi` - Buka GUI Control Center
