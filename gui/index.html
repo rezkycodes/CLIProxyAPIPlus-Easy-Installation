@@ -385,49 +385,7 @@
             color: var(--success);
         }
 
-        .provider.expiring {
-            border-color: var(--warning);
-            background: var(--warning-subtle);
-        }
 
-        .provider.expiring .provider-name {
-            color: var(--warning);
-        }
-
-        .provider.expiring .provider-icon svg {
-            fill: var(--warning);
-        }
-
-        .provider.expired {
-            border-color: var(--error);
-            background: var(--error-subtle);
-        }
-
-        .provider.expired .provider-name {
-            color: var(--error);
-        }
-
-        .provider.expired .provider-icon svg {
-            fill: var(--error);
-        }
-
-        .provider-expiry {
-            font-size: 9px;
-            color: var(--text-3);
-            margin-top: 2px;
-        }
-
-        .provider.connected .provider-expiry {
-            color: var(--success);
-        }
-
-        .provider.expiring .provider-expiry {
-            color: var(--warning);
-        }
-
-        .provider.expired .provider-expiry {
-            color: var(--error);
-        }
 
         /* Models List */
         .models-list {
@@ -1176,38 +1134,10 @@
                     providers.forEach(provider => {
                         const el = document.getElementById(`provider-${provider}`);
                         if (el) {
-                            // Reset classes
-                            el.classList.remove('connected', 'expiring', 'expired');
-                            
-                            // Get or create expiry element
-                            let expiryEl = el.querySelector('.provider-expiry');
-                            if (!expiryEl) {
-                                expiryEl = document.createElement('div');
-                                expiryEl.className = 'provider-expiry';
-                                el.appendChild(expiryEl);
-                            }
-                            
-                            const info = authStatus[provider];
-                            if (info && info.loggedIn) {
-                                if (info.expired) {
-                                    el.classList.add('expired');
-                                    expiryEl.textContent = 'Expired';
-                                } else if (info.expiresIn && info.expiresIn < 86400) {
-                                    // Less than 24h
-                                    el.classList.add('expiring');
-                                    const hours = Math.floor(info.expiresIn / 3600);
-                                    expiryEl.textContent = hours > 0 ? `${hours}h left` : 'Expiring soon';
-                                } else {
-                                    el.classList.add('connected');
-                                    if (info.expiresIn) {
-                                        const days = Math.floor(info.expiresIn / 86400);
-                                        expiryEl.textContent = days > 0 ? `${days}d left` : 'Valid';
-                                    } else {
-                                        expiryEl.textContent = 'Active';
-                                    }
-                                }
+                            if (authStatus[provider]) {
+                                el.classList.add('connected');
                             } else {
-                                expiryEl.textContent = '';
+                                el.classList.remove('connected');
                             }
                         }
                     });

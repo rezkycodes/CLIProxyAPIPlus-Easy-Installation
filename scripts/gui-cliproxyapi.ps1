@@ -174,51 +174,7 @@ function Get-AuthStatus {
     foreach ($provider in $authPatterns.Keys) {
         $pattern = Join-Path $CONFIG_DIR $authPatterns[$provider]
         $files = Get-ChildItem -Path $pattern -ErrorAction SilentlyContinue
-        
-        if ($null -ne $files -and $files.Count -gt 0) {
-            # Try to read expiry from token file
-            $latestFile = $files | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-            $expiresIn = $null
-            $expired = $false
-            
-            try {
-                $tokenData = Get-Content $latestFile.FullName -Raw | ConvertFrom-Json
-                
-                # Check various expiry fields
-                $expiryTime = $null
-                if ($tokenData.expires_at) {
-                    $expiryTime = [DateTime]::Parse($tokenData.expires_at)
-                } elseif ($tokenData.expiry) {
-                    $expiryTime = [DateTime]::Parse($tokenData.expiry)
-                } elseif ($tokenData.expires_in -and $latestFile.LastWriteTime) {
-                    $expiryTime = $latestFile.LastWriteTime.AddSeconds($tokenData.expires_in)
-                }
-                
-                if ($expiryTime) {
-                    $diff = ($expiryTime - (Get-Date)).TotalSeconds
-                    if ($diff -le 0) {
-                        $expired = $true
-                        $expiresIn = 0
-                    } else {
-                        $expiresIn = [math]::Floor($diff)
-                    }
-                }
-            } catch {
-                # Ignore parse errors
-            }
-            
-            $status[$provider] = @{
-                loggedIn = $true
-                expiresIn = $expiresIn
-                expired = $expired
-            }
-        } else {
-            $status[$provider] = @{
-                loggedIn = $false
-                expiresIn = $null
-                expired = $false
-            }
-        }
+        $status[$provider] = ($null -ne $files -and $files.Count -gt 0)
     }
     
     return $status
