@@ -23,16 +23,16 @@ Anggap saja ini seperti "router" untuk model AI - kamu login sekali ke setiap pr
 
 ## Provider yang Didukung
 
-| Provider | Perintah Login | Model Tersedia |
-|----------|----------------|----------------|
-| **Gemini CLI** | `--login` | gemini-2.5-pro, gemini-3-pro-preview |
-| **Antigravity** | `--antigravity-login` | claude-opus-4.5-thinking, claude-sonnet-4.5, gpt-oss-120b |
-| **GitHub Copilot** | `--github-copilot-login` | claude-opus-4.5, gpt-5-mini, grok-code-fast-1 |
-| **Codex** | `--codex-login` | gpt-5.1-codex-max |
-| **Claude** | `--claude-login` | claude-sonnet-4, claude-opus-4 |
-| **Qwen** | `--qwen-login` | qwen3-coder-plus |
-| **iFlow** | `--iflow-login` | glm-4.6, minimax-m2 |
-| **Kiro (AWS)** | `--kiro-aws-login` | kiro-claude-opus-4.5, kiro-claude-sonnet-4.5 |
+| Provider           | Perintah Login           | Model Tersedia                                            |
+| ------------------ | ------------------------ | --------------------------------------------------------- |
+| **Gemini CLI**     | `--login`                | gemini-2.5-pro, gemini-3-pro-preview                      |
+| **Antigravity**    | `--antigravity-login`    | claude-opus-4.5-thinking, claude-sonnet-4.5, gpt-oss-120b |
+| **GitHub Copilot** | `--github-copilot-login` | claude-opus-4.5, gpt-5-mini, grok-code-fast-1             |
+| **Codex**          | `--codex-login`          | gpt-5.1-codex-max                                         |
+| **Claude**         | `--claude-login`         | claude-sonnet-4, claude-opus-4                            |
+| **Qwen**           | `--qwen-login`           | qwen3-coder-plus                                          |
+| **iFlow**          | `--iflow-login`          | glm-4.6, minimax-m2                                       |
+| **Kiro (AWS)**     | `--kiro-aws-login`       | kiro-claude-opus-4.5, kiro-claude-sonnet-4.5              |
 
 ---
 
@@ -119,17 +119,17 @@ gui-cliproxyapi
 
 ```bash
 # Download dan jalankan installer
-curl -fsSL https://raw.githubusercontent.com/julianromli/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rezkycodes/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
 
 # Atau pake wget
-wget -qO- https://raw.githubusercontent.com/julianromli/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
+wget -qO- https://raw.githubusercontent.com/rezkycodes/CLIProxyAPIPlus-Easy-Installation/main/scripts/install-cliproxyapi.sh | bash
 ```
 
 ### Opsi 2: Install Manual
 
 ```bash
 # Clone repo ini
-git clone https://github.com/julianromli/CLIProxyAPIPlus-Easy-Installation.git
+git clone https://github.com/rezkycodes/CLIProxyAPIPlus-Easy-Installation.git
 cd CLIProxyAPIPlus-Easy-Installation
 
 # Jadikan scripts executable
@@ -302,50 +302,50 @@ curl http://localhost:8317/v1/chat/completions \
 ## Model yang Tersedia
 
 ### Provider Antigravity
-| Model ID | Deskripsi |
-|----------|-----------|
-| `gemini-claude-opus-4-5-thinking` | Claude Opus 4.5 dengan extended thinking |
+| Model ID                            | Deskripsi                                  |
+| ----------------------------------- | ------------------------------------------ |
+| `gemini-claude-opus-4-5-thinking`   | Claude Opus 4.5 dengan extended thinking   |
 | `gemini-claude-sonnet-4-5-thinking` | Claude Sonnet 4.5 dengan extended thinking |
-| `gemini-claude-sonnet-4-5` | Claude Sonnet 4.5 |
-| `gemini-3-pro-preview` | Gemini 3 Pro Preview |
-| `gpt-oss-120b-medium` | GPT OSS 120B |
+| `gemini-claude-sonnet-4-5`          | Claude Sonnet 4.5                          |
+| `gemini-3-pro-preview`              | Gemini 3 Pro Preview                       |
+| `gpt-oss-120b-medium`               | GPT OSS 120B                               |
 
 ### Provider GitHub Copilot
-| Model ID | Deskripsi |
-|----------|-----------|
-| `claude-opus-4.5` | Claude Opus 4.5 |
-| `gpt-5-mini` | GPT-5 Mini |
-| `grok-code-fast-1` | Grok Code Fast |
+| Model ID           | Deskripsi       |
+| ------------------ | --------------- |
+| `claude-opus-4.5`  | Claude Opus 4.5 |
+| `gpt-5-mini`       | GPT-5 Mini      |
+| `grok-code-fast-1` | Grok Code Fast  |
 
 ### Provider Gemini CLI
-| Model ID | Deskripsi |
-|----------|-----------|
-| `gemini-2.5-pro` | Gemini 2.5 Pro |
+| Model ID               | Deskripsi            |
+| ---------------------- | -------------------- |
+| `gemini-2.5-pro`       | Gemini 2.5 Pro       |
 | `gemini-3-pro-preview` | Gemini 3 Pro Preview |
 
 ### Provider Codex
-| Model ID | Deskripsi |
-|----------|-----------|
+| Model ID            | Deskripsi         |
+| ------------------- | ----------------- |
 | `gpt-5.1-codex-max` | GPT-5.1 Codex Max |
 
 ### Provider Qwen
-| Model ID | Deskripsi |
-|----------|-----------|
+| Model ID           | Deskripsi        |
+| ------------------ | ---------------- |
 | `qwen3-coder-plus` | Qwen3 Coder Plus |
 
 ### Provider iFlow
-| Model ID | Deskripsi |
-|----------|-----------|
-| `glm-4.6` | GLM 4.6 |
+| Model ID     | Deskripsi  |
+| ------------ | ---------- |
+| `glm-4.6`    | GLM 4.6    |
 | `minimax-m2` | Minimax M2 |
 
 ### Provider Kiro (AWS)
-| Model ID | Deskripsi |
-|----------|-----------|
-| `kiro-claude-opus-4.5` | Claude Opus 4.5 via Kiro |
+| Model ID                 | Deskripsi                  |
+| ------------------------ | -------------------------- |
+| `kiro-claude-opus-4.5`   | Claude Opus 4.5 via Kiro   |
 | `kiro-claude-sonnet-4.5` | Claude Sonnet 4.5 via Kiro |
-| `kiro-claude-sonnet-4` | Claude Sonnet 4 via Kiro |
-| `kiro-claude-haiku-4.5` | Claude Haiku 4.5 via Kiro |
+| `kiro-claude-sonnet-4`   | Claude Sonnet 4 via Kiro   |
+| `kiro-claude-haiku-4.5`  | Claude Haiku 4.5 via Kiro  |
 
 ---
 
@@ -473,13 +473,13 @@ GUI menjalankan management server lokal di `localhost:8318` yang handle semua pe
 
 ## Lokasi File
 
-| File | Lokasi | Deskripsi |
-|------|--------|-----------|
-| Binary | `~/bin/cliproxyapi-plus.exe` | Executable proxy server |
-| Config | `~/.cli-proxy-api/config.yaml` | Konfigurasi proxy |
-| Token auth | `~/.cli-proxy-api/*.json` | Token OAuth untuk setiap provider |
-| Config Droid | `~/.factory/config.json` | Custom models untuk Factory Droid |
-| Source | `~/CLIProxyAPIPlus/` | Source yang di-clone (kalau build dari source) |
+| File         | Lokasi                         | Deskripsi                                      |
+| ------------ | ------------------------------ | ---------------------------------------------- |
+| Binary       | `~/bin/cliproxyapi-plus.exe`   | Executable proxy server                        |
+| Config       | `~/.cli-proxy-api/config.yaml` | Konfigurasi proxy                              |
+| Token auth   | `~/.cli-proxy-api/*.json`      | Token OAuth untuk setiap provider              |
+| Config Droid | `~/.factory/config.json`       | Custom models untuk Factory Droid              |
+| Source       | `~/CLIProxyAPIPlus/`           | Source yang di-clone (kalau build dari source) |
 
 ---
 
